@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +23,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/api/conversations' , [ConversationController::class, 'index']);
+Route::get('/api/messages' , [MessageController::class, 'index']);
+
+Route::post('/api/messages', [MessageController::class, 'store']);
