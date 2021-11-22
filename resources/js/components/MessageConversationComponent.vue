@@ -15,11 +15,6 @@ export default {
       default: false
     }
   },
-  data() {
-    return {
-      content: 'abc',
-    }
-  },
 
 };
 </script>

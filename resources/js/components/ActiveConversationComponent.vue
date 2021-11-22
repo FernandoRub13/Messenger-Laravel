@@ -51,22 +51,26 @@ export default {
     return {
       content: '',
       conversation: [],
+      contactId: 2,
     };
   },
   mounted() {
     this.getMessages();
   },
   methods: {
-    getMessages() {
-      axios.get("/api/messages")
-    .then(response => {
-      this.conversation = response.data;
-      console.log(this.conversation);
-    }); 
+    getMessages() { 
+      axios.get(`/api/messages?contact_id=${this.contactId}`)
+      .then(response => {
+        this.conversation = response.data;
+        console.log(this.conversation);
+      })
+      .catch(error => {
+        console.log(error);
+      }); 
     },
     postMessage() {
       const params = {
-        to_id: 2,
+        to_id: this.contactId,
         content: this.content,
       };
 

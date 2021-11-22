@@ -8,4 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Conversation extends Model
 {
     use HasFactory;
+    protected $fillable = ['user_id', 'contact_id', 'has_blocked', 'last_message', 'last_time', 'listen_notifications'];
+
+    protected $appends = ['contact_name'];
+
+    public function getContactNameAttribute()
+    {
+        return $this->contact()->first(['name'])->name;
+    }
+
+    public function contact()
+    {
+        return $this->belongsTo(User::class, 'contact_id');
+    }
 }

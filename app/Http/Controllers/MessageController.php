@@ -8,14 +8,18 @@ use Illuminate\Support\Facades\DB;
 
 class MessageController extends Controller
 {
-    public function index()
+    public function index( Request $request )
     {
         $userId = auth()->user()->id;
+        $contactId = $request->contact_id;
         return Message::select(
-        'id', 
-        DB::raw("IF(`from_id`=$userId,TRUE,FALSE) as written_by_me"), 
-        'created_at', 
-        'content')->get();
+            'id', 
+            DB::raw("IF(`from_id`=$userId,TRUE,FALSE) as written_by_me"), 
+            'created_at', 
+            'content')
+        ->where('from_id', $userId)->where('to_id', $contactId) 
+        ->orWhere('from_id', $contactId)->where('to_id', $userId)
+        ->get();
     }
     public function store(Request $request)
     {
