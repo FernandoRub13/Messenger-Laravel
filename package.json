@@ -27,6 +27,8 @@
     "dependencies": {
         "bootstrap-vue": "^2.21.2",
         "laravel-echo": "^1.11.3",
+        "moment": "^2.29.1",
+        "moment-timezone": "^0.5.34",
         "portal-vue": "^2.1.7",
         "pusher-js": "^7.0.3"
     }

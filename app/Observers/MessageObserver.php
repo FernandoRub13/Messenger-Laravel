@@ -15,6 +15,7 @@ class MessageObserver
      * @return void
      */
     public function created(Message $message)
+    // public function retrieved(Message $message)
     {
         $conversation = Conversation::
             where('user_id', $message->from_id)

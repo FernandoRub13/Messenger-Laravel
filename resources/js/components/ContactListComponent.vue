@@ -21,25 +21,22 @@
 import ContactComponent from './ContactComponent.vue';
 export default {
   components: { ContactComponent },
+  props: {
+    conversations: {
+      type: Array,
+      required: true
+    },
+  },
   data() {
     return {
-      conversations: [],
+    
     };
   },
   mounted() {
-    this.getConversations();
+   
   },
   methods: {
-    getConversations() {
-      axios.get('/api/conversations')
-        .then(response => {
-          this.conversations = response.data;
-          console.log(this.conversations);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
+    
     selectConversation(conversation) {
       this.$emit('conversationSelected', conversation);
       // console.log(conversation);

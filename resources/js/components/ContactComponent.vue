@@ -11,7 +11,8 @@
                 <p class="text-muted small">{{conversation.last_message}}</p>
             </b-col>
             <b-col cols="3" align-self="center" class="d-none d-md-block">
-                <p class="text-muted small mb-1">{{conversation.last_time}}</p>
+                <p class="text-muted small mb-1">{{ last_time }}</p>
+                
             </b-col>
         </b-row>
     </b-list-group-item>
@@ -32,6 +33,15 @@
         },
         data() {
             return {
+            }
+        },
+        computed: {
+            last_time() {
+                // return moment(this.conversation.last_time, "YYYY-MM-DD hh:mm:ss")
+                // .tz('America/Mexico_City')
+                // .locale('es').fromNow();
+                var time = moment.utc(this.conversation.last_time).tz('America/Mexico_City');
+                return time.locale('es').fromNow();
             }
         },
     }

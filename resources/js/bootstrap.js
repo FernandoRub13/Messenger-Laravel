@@ -41,3 +41,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
      forceTLS: false,
      disableStats: true,
  });
+
+// Date and time format
+window.moment = require('moment-timezone');
+// date timezone format
+// window.moment.tz.setDefault('America/Mexico_City');
