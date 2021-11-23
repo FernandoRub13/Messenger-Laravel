@@ -37,7 +37,7 @@
           rounded="circle"
           alt="Your friend"
         />
-        <p>Usuario seleccionado</p>
+        <p>{{contactName}}</p>
         <hr />
         <b-form-checkbox> Desactivar notificaciones </b-form-checkbox>
       </b-col>
@@ -47,11 +47,20 @@
 
 <script>
 export default {
+  props: {
+    contactId: {
+      type: Number,
+      required: true
+    },
+    contactName: {
+      type: String,
+      required: true
+    },
+  },
   data() {
     return {
       content: '',
       conversation: [],
-      contactId: 2,
     };
   },
   mounted() {
@@ -81,6 +90,11 @@ export default {
           this.getMessages();  
         } 
       });
+    },
+  },
+  watch: {
+    contactId() {
+      this.getMessages();
     },
   },
 };

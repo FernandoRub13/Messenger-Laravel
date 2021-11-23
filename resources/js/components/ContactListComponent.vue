@@ -41,8 +41,8 @@ export default {
         });
     },
     selectConversation(conversation) {
-      // this.$emit('select', conversation);
-      console.log(conversation);
+      this.$emit('conversationSelected', conversation);
+      // console.log(conversation);
     },
   }
 }
