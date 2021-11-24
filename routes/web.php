@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/profile' , [ProfileController::class, 'edit'])->name('profile.edit');
+Route::post('/profile' , [ProfileController::class, 'update'])->name('profile.post');
 
 Route::get('/api/conversations' , [ConversationController::class, 'index']);
 Route::get('/api/messages' , [MessageController::class, 'index']);
