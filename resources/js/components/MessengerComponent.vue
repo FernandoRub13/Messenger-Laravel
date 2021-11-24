@@ -2,9 +2,15 @@
   <b-container fluid class="h-100">
     <b-row no-gutters class="h-100">
       <b-col cols="4">
+        <b-input-group>
+            <b-form-input 
+            placeholder="Buscar contacto" 
+            v-model="search"
+            class="my-2" type="text"></b-form-input>
+        </b-input-group>
         <contact-list-component
           @conversationSelected="changeActiveConversation($event)"
-          :conversations="conversations"
+          :conversations="conversationsFiltered"
         ></contact-list-component>
       </b-col>
       <b-col cols="8">
@@ -33,6 +39,7 @@ export default {
       selectedConversation: null,
       messages: [],
       conversations: [],
+      search: '',
     };
   },
   mounted() {
@@ -96,6 +103,15 @@ export default {
         if (conversation.contact_id === user.id) {
           this.$set(conversation, "online", status);
         }
+      });
+    },
+  },
+  computed: {
+    conversationsFiltered() {
+      return this.conversations.filter((conversation) => {
+        return conversation
+        .contact_name.toLowerCase()
+        .includes(this.search.toLowerCase());
       });
     },
   },
