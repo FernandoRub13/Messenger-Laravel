@@ -44,6 +44,10 @@ export default {
       this.addMessage(message);
       console.log(message.created_at);
     });
+    Echo.join("messenger")
+      .here((users) => users.forEach((user) => this.changeStatus(user, true)))
+      .joining((user) => this.changeStatus(user, true))
+      .leaving((user) => this.changeStatus(user, false));
   },
   methods: {
     getConversations() {
@@ -83,6 +87,13 @@ export default {
         || this.selectedConversation.contact_id == message.to_id) {
         this.messages.push(message);
       }
+    },
+    changeStatus(user, status) {
+      this.conversations.find((conversation) => {
+        if (conversation.contact_id === user.id) {
+          this.$set(conversation, "online", status);
+        }
+      });
     },
   },
 };

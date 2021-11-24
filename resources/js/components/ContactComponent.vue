@@ -7,7 +7,11 @@
                 </b-img>
             </b-col>
             <b-col cols="5" align-self="center" class="d-none d-md-block">
-                <p class="mb-0">{{conversation.contact_name}}</p>
+                <p class="mb-0">
+                    <status-component :online="conversation.online" />
+                    {{conversation.contact_name}}
+                </p>
+                
                 <p class="text-muted small">{{conversation.last_message}}</p>
             </b-col>
             <b-col cols="3" align-self="center" class="d-none d-md-block">
@@ -20,7 +24,9 @@
 </template>
 
 <script>
+    
     export default {
+        
         props: {
             variant: {
                 type: String,
@@ -37,9 +43,6 @@
         },
         computed: {
             last_time() {
-                // return moment(this.conversation.last_time, "YYYY-MM-DD hh:mm:ss")
-                // .tz('America/Mexico_City')
-                // .locale('es').fromNow();
                 var time = moment.utc(this.conversation.last_time).tz('America/Mexico_City');
                 return time.locale('es').fromNow();
             }
