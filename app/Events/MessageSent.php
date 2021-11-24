@@ -32,9 +32,7 @@ class MessageSent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        // En este punto se estan utlizando canales publicos para envíar mensajes 
-        // a todos los usuarios conectados a la aplicación y a los cuales esten
-        // suscritos el canal publico del chat con laravel-echo en la parte del frontend
-        return new Channel('users.'. $this->message->to_id);
+        
+        return new PrivateChannel('users.'. $this->message->to_id);
     }
 }
