@@ -2,7 +2,7 @@
     <b-list-group-item class="py-1" href="#" :variant="variant" >
         <b-row class="p-2" align-h="center">
             <b-col cols="12" md="4" class="text-center">
-                <b-img blank blank-color="#777" width="55" height="55" class="m-1" rounded="circle"
+                <b-img :src="conversation.contact_image" width="55" height="55" class="m-1" rounded="circle"
                     alt="Your friend">
                 </b-img>
             </b-col>

@@ -18,8 +18,10 @@
           v-if="selectedConversation"
           :contact-id="selectedConversation.contact_id"
           :contact-name="selectedConversation.contact_name"
+          :contact-image="selectedConversation.contact_image"
           :messages="messages"
           @messageCreated="addMessage($event)"
+          :my-image="myImageUrl"
         ></active-conversation-component>
       </b-col>
     </b-row>
@@ -28,9 +30,9 @@
 
 <script>
 export default {
-  props: {
-    userId: {
-      type: Number,
+  props: { 
+    user: {
+      type: Object,
       required: true,
     },
   },
@@ -44,8 +46,8 @@ export default {
   },
   mounted() {
     this.getConversations();
-    console.log(this.userId);
-    Echo.join("users." + this.userId).listen("MessageSent", (data) => {
+    console.log(this.user.id);
+    Echo.join("users." + this.user.id).listen("MessageSent", (data) => {
       const message = data.message;
       message.written_by_me = false;
       this.addMessage(message);
@@ -88,7 +90,7 @@ export default {
        conversation.contact_id == message.from_id || 
        conversation.contact_id == message.to_id
       )
-      const author = this.userId === message.from_id ? 'Tú: ' : conversation.contact_name + ': ';
+      const author = this.user.id === message.from_id ? 'Tú: ' : conversation.contact_name + ': ';
       conversation.last_message = `${author}: ${message.content}`;
       conversation.last_time = message.created_at;
 
@@ -114,6 +116,10 @@ export default {
         .includes(this.search.toLowerCase());
       });
     },
+    myImageUrl() {
+      return '/users/' +this.user.image;
+    },
+    
   },
 };
 </script>

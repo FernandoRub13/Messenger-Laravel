@@ -11,13 +11,14 @@
         >
           <b-card-body class="card-body-scroll">
             <message-conversation-component
-              v-for="message in messages"
+              v-for="message in  messages"
               :key="message.id"
               :written-by-me="
                 message.written_by_me === 1 || message.written_by_me
                   ? true
                   : false
               "
+              :image="message.written_by_me ? myImage : contactImage"
             >
               {{ message.content }}
             </message-conversation-component>
@@ -38,8 +39,7 @@
       </b-col>
       <b-col cols="4">
         <b-img
-          blank
-          blank-color="#777"
+          :src="contactImage"
           width="55"
           height="55"
           class="m-1"
@@ -69,6 +69,14 @@ export default {
       type: Array,
       required: true,
     },
+    contactImage: {
+      type: String,
+      required: true,
+    },
+    myImage: {
+      type: String,
+      required: true,
+    }, 
   },
   data() {
     return {
