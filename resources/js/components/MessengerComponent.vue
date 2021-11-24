@@ -38,7 +38,7 @@ export default {
   mounted() {
     this.getConversations();
     console.log(this.userId);
-    Echo.private("users." + this.userId).listen("MessageSent", (data) => {
+    Echo.join("users." + this.userId).listen("MessageSent", (data) => {
       const message = data.message;
       message.written_by_me = false;
       this.addMessage(message);
@@ -76,8 +76,10 @@ export default {
         });
     },
     addMessage(message) {
-      const conversation = this.conversations.find(
-        (conversation) => conversation.contact_id === message.from_id || conversation.contact_id === message.to_id
+       console.log(message);
+      const conversation = this.conversations.find((conversation) =>
+       conversation.contact_id == message.from_id || 
+       conversation.contact_id == message.to_id
       )
       const author = this.userId === message.from_id ? 'Tú: ' : conversation.contact_name + ': ';
       conversation.last_message = `${author}: ${message.content}`;
@@ -85,6 +87,7 @@ export default {
 
       if (this.selectedConversation.contact_id == message.from_id
         || this.selectedConversation.contact_id == message.to_id) {
+         
         this.messages.push(message);
       }
     },
