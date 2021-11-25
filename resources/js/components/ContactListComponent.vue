@@ -33,6 +33,7 @@ export default {
     selectConversation(conversation) {
       this.selectedConversationId = conversation.id;
       this.$emit('conversationSelected', conversation);
+      // eventBus.$emit('example', conversation);
       // console.log(conversation);
     },
   }

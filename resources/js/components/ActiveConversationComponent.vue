@@ -65,10 +65,6 @@ export default {
       type: String,
       required: true,
     },
-    messages: {
-      type: Array,
-      required: true,
-    },
     contactImage: {
       type: String,
       required: true,
@@ -83,7 +79,18 @@ export default {
       content: "",
     };
   },
-  mounted() {},
+  computed: {
+    messages() {
+      return this.$store.state.messages;
+    },
+  },
+  mounted() {
+    // eventBus.$on("example", (message) => {
+    //   console.log("Ocurrió el evento example");
+    //   console.log(message);
+
+    // });
+  },
   methods: {
     postMessage() {
       const params = {

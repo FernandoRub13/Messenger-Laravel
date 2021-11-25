@@ -6,13 +6,15 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue').default;
-
+// window.Vue = require('vue').default;
+import Vue from 'vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+// window.eventBus = new Vue(); // Global event bus  
+//import store
+import store from './store'
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
@@ -29,4 +31,5 @@ Vue.component('profile-form-component', require('./components/ProfileFormCompone
 
 const app = new Vue({
     el: '#app',
+    store,
 });

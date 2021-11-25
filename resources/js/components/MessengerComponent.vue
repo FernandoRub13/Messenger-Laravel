@@ -19,7 +19,6 @@
           :contact-id="selectedConversation.contact_id"
           :contact-name="selectedConversation.contact_name"
           :contact-image="selectedConversation.contact_image"
-          :messages="messages"
           @messageCreated="addMessage($event)"
           :my-image="myImageUrl"
         ></active-conversation-component>
@@ -39,7 +38,6 @@ export default {
   data() {
     return {
       selectedConversation: null,
-      messages: [],
       conversations: [],
       search: '',
     };
@@ -77,8 +75,7 @@ export default {
       axios
         .get(`/api/messages?contact_id=${this.selectedConversation.contact_id}`)
         .then((response) => {
-          this.messages = response.data;
-          // console.log(this.messages);
+          this.$store.commit('newMessagesList', response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -97,7 +94,7 @@ export default {
       if (this.selectedConversation.contact_id == message.from_id
         || this.selectedConversation.contact_id == message.to_id) {
          
-        this.messages.push(message);
+        this.$store.commit('addMessage',message);
       }
     },
     changeStatus(user, status) {
