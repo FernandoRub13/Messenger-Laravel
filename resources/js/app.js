@@ -28,6 +28,7 @@ Vue.component('message-conversation-component', require('./components/MessageCon
 Vue.component('messenger-component', require('./components/MessengerComponent.vue').default);
 Vue.component('status-component', require('./components/StatusComponent.vue').default);
 Vue.component('profile-form-component', require('./components/ProfileFormComponent.vue').default);
+Vue.component('contact-form-component', require('./components/ContactFormComponent.vue').default);
 
 const app = new Vue({
     el: '#app',

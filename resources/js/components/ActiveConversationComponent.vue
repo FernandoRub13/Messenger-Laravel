@@ -6,7 +6,6 @@
           no-body
           footer-bg-variant="dark"
           footer-border-variant="dark"
-          title="Title"
           class="h-100"
         >
           <b-card-body class="card-body-scroll">
@@ -18,7 +17,7 @@
                   ? true
                   : false
               "
-              :image="message.written_by_me ? myImage : contactImage"
+              :image="message.written_by_me ? myImage : selectedConversation.contact_image"
             >
               {{ message.content }}
             </message-conversation-component>
@@ -39,14 +38,14 @@
       </b-col>
       <b-col cols="4">
         <b-img
-          :src="contactImage"
+          :src="selectedConversation.contact_image"
           width="55"
           height="55"
           class="m-1"
           rounded="circle"
           alt="Your friend"
         />
-        <p>{{ contactName }}</p>
+        <p>{{ selectedConversation.contact_name }}</p>
         <hr />
         <b-form-checkbox> Desactivar notificaciones </b-form-checkbox>
       </b-col>
@@ -56,24 +55,6 @@
 
 <script>
 export default {
-  props: {
-    contactId: {
-      type: Number,
-      required: true,
-    },
-    contactName: {
-      type: String,
-      required: true,
-    },
-    contactImage: {
-      type: String,
-      required: true,
-    },
-    myImage: {
-      type: String,
-      required: true,
-    }, 
-  },
   data() {
     return {
       content: "",
@@ -83,6 +64,12 @@ export default {
     messages() {
       return this.$store.state.messages;
     },
+    selectedConversation() {
+      return this.$store.state.selectedConversation;
+    },
+    myImage(){
+      return '/users/' + this.$store.state.user.image;
+    }, 
   },
   mounted() {
     // eventBus.$on("example", (message) => {
@@ -93,19 +80,7 @@ export default {
   },
   methods: {
     postMessage() {
-      const params = {
-        to_id: this.contactId,
-        content: this.content,
-      };
-
-      axios.post("/api/messages", params).then((response) => {
-        if (response.data.status == "success") {
-          this.content = "";
-          const message = response.data.message;
-          message.written_by_me = true;
-          this.$emit("messageCreated", message); 
-        }
-      });
+      this.$store.dispatch("postMessage", this.content);
     },
     scrollToBottom() {
       const element = document.getElementsByClassName("card-body-scroll")[0];

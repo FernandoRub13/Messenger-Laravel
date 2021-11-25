@@ -1,10 +1,10 @@
 <template>  
   <b-list-group>
     <contact-component 
-    v-for="conversation in conversations" 
+    v-for="conversation in conversationsFiltered" 
     :key="conversation.id" 
     :conversation="conversation"
-    :selected="selectedConversationId == conversation.id"
+    :selected="isSelected(conversation)"
     @click.native="selectConversation(conversation)">
     ></contact-component>
   </b-list-group>
@@ -13,29 +13,25 @@
 <script>
 import ContactComponent from './ContactComponent.vue';
 export default {
-  components: { ContactComponent },
-  props: {
-    conversations: {
-      type: Array,
-      required: true
-    },
-  },
-  data() {
-    return {
-      selectedConversationId: null,
-    };
-  },
-  mounted() {
-   
-  },
+  components: { ContactComponent }, 
   methods: {
     
     selectConversation(conversation) {
-      this.selectedConversationId = conversation.id;
-      this.$emit('conversationSelected', conversation);
-      // eventBus.$emit('example', conversation);
-      // console.log(conversation);
+      this.$store.dispatch('getMessages', conversation);
     },
-  }
+    isSelected(conversation) {
+      if(this.selectedConversation)
+        return this.selectedConversation.id === conversation.id;
+      return false;
+    },
+  },
+  computed: {
+    selectedConversation() {
+      return this.$store.state.selectedConversation;
+    },
+    conversationsFiltered() {
+      return this.$store.getters.conversationsFiltered;
+    },
+  },
 }
 </script>

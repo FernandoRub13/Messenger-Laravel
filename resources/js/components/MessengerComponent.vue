@@ -2,26 +2,12 @@
   <b-container fluid class="h-100">
     <b-row no-gutters class="h-100">
       <b-col cols="4">
-        <b-input-group>
-            <b-form-input 
-            placeholder="Buscar contacto" 
-            v-model="search"
-            class="my-2" type="text"></b-form-input>
-        </b-input-group>
-        <contact-list-component
-          @conversationSelected="changeActiveConversation($event)"
-          :conversations="conversationsFiltered"
-        ></contact-list-component>
+        <contact-form-component />
+        <contact-list-component />
       </b-col>
       <b-col cols="8">
         <active-conversation-component
-          v-if="selectedConversation"
-          :contact-id="selectedConversation.contact_id"
-          :contact-name="selectedConversation.contact_name"
-          :contact-image="selectedConversation.contact_image"
-          @messageCreated="addMessage($event)"
-          :my-image="myImageUrl"
-        ></active-conversation-component>
+          v-if="selectedConversation" />
       </b-col>
     </b-row>
   </b-container>
@@ -37,13 +23,12 @@ export default {
   },
   data() {
     return {
-      selectedConversation: null,
       conversations: [],
-      search: '',
     };
   },
   mounted() {
-    this.getConversations();
+    this.$store.commit('setUser', this.user);
+    this.$store.dispatch('getConversations');
     console.log(this.user.id);
     Echo.join("users." + this.user.id).listen("MessageSent", (data) => {
       const message = data.message;
@@ -57,48 +42,10 @@ export default {
       .leaving((user) => this.changeStatus(user, false));
   },
   methods: {
-    getConversations() {
-      axios.get('/api/conversations')
-        .then(response => {
-          this.conversations = response.data;
-          console.log(this.conversations);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    changeActiveConversation(conversation) {
-      this.selectedConversation = conversation;
-      this.getMessages();
-    },
-    getMessages() {
-      axios
-        .get(`/api/messages?contact_id=${this.selectedConversation.contact_id}`)
-        .then((response) => {
-          this.$store.commit('newMessagesList', response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    addMessage(message) {
-       console.log(message);
-      const conversation = this.conversations.find((conversation) =>
-       conversation.contact_id == message.from_id || 
-       conversation.contact_id == message.to_id
-      )
-      const author = this.user.id === message.from_id ? 'Tú: ' : conversation.contact_name + ': ';
-      conversation.last_message = `${author}: ${message.content}`;
-      conversation.last_time = message.created_at;
-
-      if (this.selectedConversation.contact_id == message.from_id
-        || this.selectedConversation.contact_id == message.to_id) {
-         
-        this.$store.commit('addMessage',message);
-      }
-    },
+    
+    
     changeStatus(user, status) {
-      this.conversations.find((conversation) => {
+      this.$store.state.conversations.find((conversation) => {
         if (conversation.contact_id === user.id) {
           this.$set(conversation, "online", status);
         }
@@ -106,16 +53,10 @@ export default {
     },
   },
   computed: {
-    conversationsFiltered() {
-      return this.conversations.filter((conversation) => {
-        return conversation
-        .contact_name.toLowerCase()
-        .includes(this.search.toLowerCase());
-      });
+    selectedConversation() {
+      return this.$store.state.selectedConversation;
     },
-    myImageUrl() {
-      return '/users/' +this.user.image;
-    },
+    
     
   },
 };
