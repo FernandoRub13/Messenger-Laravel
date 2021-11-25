@@ -28,13 +28,13 @@
     export default {
         
         props: {
-            variant: {
-                type: String,
-                default: ''
-            },
             conversation: {
                 type: Object,
                 default: () => ({})
+            },
+            selected: {
+                type: Boolean,
+                default: false
             }
         },
         data() {
@@ -45,6 +45,9 @@
             last_time() {
                 var time = moment.utc(this.conversation.last_time).tz('America/Mexico_City');
                 return time.locale('es').fromNow();
+            },
+            variant() {
+                return this.selected ? 'secondary' : '';
             }
         },
     }
