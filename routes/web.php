@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\ConversationController;
-use App\Http\Controllers\MessageController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ConversationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +24,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/chat', [ChatController::class, 'index'])->name('chat');
+Route::get('/chat/{conversationId}', [ChatController::class, 'index']);
 
 Route::get('/profile' , [ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/profile' , [ProfileController::class, 'update'])->name('profile.post');

@@ -18,6 +18,7 @@ export default {
     
     selectConversation(conversation) {
       this.$store.dispatch('getMessages', conversation);
+      this.$router.push(`/chat/${conversation.id}`);
     },
     isSelected(conversation) {
       if(this.selectedConversation)

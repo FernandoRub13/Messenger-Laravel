@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 export default {
   props: { 
     user: {
@@ -27,14 +28,25 @@ export default {
     };
   },
   mounted() {
+    this.$store
+      .dispatch('getConversations')
+      .then(() => {
+        const conversationId = this.$route.params.conversationId;
+        if(conversationId) {
+          const conversation = this.$store.getters.getConversationById(conversationId);
+
+          this.$store.dispatch('getMessages', conversation);
+          // console.log('conversation', conversation);
+        }
+      });
+
     this.$store.commit('setUser', this.user);
-    this.$store.dispatch('getConversations');
     console.log(this.user.id);
     Echo.join("users." + this.user.id).listen("MessageSent", (data) => {
       const message = data.message;
       message.written_by_me = false;
-      // this.addMessage(message);
-      this.$store.commit('addMessage', message);
+      this.addMessage(message);
+      // this.$store.commit('addMessage', message); 
     });
     Echo.join("messenger")
       .here((users) => users.forEach((user) => this.changeStatus(user, true)))
@@ -49,6 +61,9 @@ export default {
         }
       });
     },
+    ...mapMutations([
+      'addMessage',
+    ]),
   },
   computed: {
     selectedConversation() {
