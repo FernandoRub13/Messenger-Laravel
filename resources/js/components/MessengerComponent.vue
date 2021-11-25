@@ -33,8 +33,8 @@ export default {
     Echo.join("users." + this.user.id).listen("MessageSent", (data) => {
       const message = data.message;
       message.written_by_me = false;
-      this.addMessage(message);
-      console.log(message.created_at);
+      // this.addMessage(message);
+      this.$store.commit('addMessage', message);
     });
     Echo.join("messenger")
       .here((users) => users.forEach((user) => this.changeStatus(user, true)))
@@ -42,8 +42,6 @@ export default {
       .leaving((user) => this.changeStatus(user, false));
   },
   methods: {
-    
-    
     changeStatus(user, status) {
       this.$store.state.conversations.find((conversation) => {
         if (conversation.contact_id === user.id) {

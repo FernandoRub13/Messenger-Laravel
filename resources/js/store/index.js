@@ -18,7 +18,7 @@ export default new Vuex.Store({
       newMessagesList(state, messages) {
         state.messages = messages;
       },
-      addMessage(statemessage) {
+      addMessage(state, message) {
         console.log(message);
        const conversation = state.conversations.find((conversation) =>
         conversation.contact_id == message.from_id || 
@@ -64,15 +64,18 @@ export default new Vuex.Store({
       },
       postMessage(context, message) {
         const params = {
-          to_id: context.state.selectedConversation.id,
-          content: content,
+
+          to_id: context.state.selectedConversation.contact_id,
+          content: message,
         };
+        // console.log(context.state.selectedConversation.id);
+        // return
         axios.post("/api/messages", params).then((response) => {
           if (response.data.status == "success") {
-            content = "";
+            // content = "";
             const message = response.data.message;
             message.written_by_me = true;
-            context.commit("messageCreated", message); 
+            context.commit("addMessage", message); 
           }
         });
       }
