@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   data() {
     return {
@@ -80,7 +82,10 @@ export default {
   },
   methods: {
     postMessage() {
-      this.$store.dispatch("postMessage", this.content);
+      this.$store.dispatch("postMessage", this.content)
+      .then(() => {
+        this.content = "";
+      });
     },
     scrollToBottom() {
       const element = document.getElementsByClassName("card-body-scroll")[0];

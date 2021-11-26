@@ -70,7 +70,7 @@ export default new Vuex.Store({
         };
         // console.log(context.state.selectedConversation.id);
         // return
-        axios.post("/api/messages", params).then((response) => {
+        return axios.post("/api/messages", params).then((response) => {
           if (response.data.status == "success") {
             // content = "";
             const message = response.data.message;
